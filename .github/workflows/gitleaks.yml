@@ -1,0 +1,83 @@
+name: gitleaks
+
+# Reusable secret scan dla repo OmniThings (P0-3 z audytu 2026-06-08; remediacja M22, 2026-07-02).
+#
+# Uruchamia gitleaks CLI bezposrednio (licencja MIT) zamiast gitleaks/gitleaks-action@v2 —
+# action wymaga platnego GITLEAKS_LICENSE dla kont organizacyjnych i dokladnie na tym
+# polegl jedyny run w OmniThings/OmniMemory (2026-06-08).
+#
+# Uzycie w repo (thin caller w <repo>/.github/workflows/gitleaks.yml):
+#
+#   on:
+#     push:
+#     pull_request:
+#   permissions:
+#     contents: read
+#   jobs:
+#     gitleaks:
+#       uses: OmniThings/.github/.github/workflows/gitleaks.yml@main
+#       with:
+#         enforce: false   # report-only; ustaw true po wyczyszczeniu/allowlistowaniu findings
+#
+# Konfiguracja per-repo: opcjonalny .gitleaks.toml w korzeniu repo —
+# gitleaks podnosi go automatycznie (precedencja: --config > GITLEAKS_CONFIG >
+# GITLEAKS_CONFIG_TOML > <repo>/.gitleaks.toml > default).
+
+on:
+  workflow_call:
+    inputs:
+      enforce:
+        description: "Failuj job, gdy znaleziono sekrety (false = report-only)"
+        type: boolean
+        required: false
+        default: false
+      gitleaks-version:
+        description: "Wersja gitleaks CLI (bez prefiksu v)"
+        type: string
+        required: false
+        default: "8.30.1"
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (pelna historia)
+        uses: actions/checkout@v4
+        with:
+          # fetch-depth: 0 jest wymagane, by gitleaks skanowal cala historie commitow,
+          # nie tylko ostatni commit.
+          fetch-depth: 0
+
+      - name: Install gitleaks
+        env:
+          VERSION: ${{ inputs.gitleaks-version }}
+        run: |
+          set -euo pipefail
+          curl -fsSL -o /tmp/gitleaks.tar.gz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz"
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+          sudo install -m 0755 /tmp/gitleaks /usr/local/bin/gitleaks
+          gitleaks version
+
+      - name: Scan repository (full git history)
+        env:
+          ENFORCE: ${{ inputs.enforce }}
+        run: |
+          rc=0
+          gitleaks git . --verbose --redact --exit-code 2 || rc=$?
+          if [ "$rc" -eq 0 ]; then
+            echo "gitleaks: brak wykrytych sekretow"
+          elif [ "$rc" -eq 2 ]; then
+            if [ "$ENFORCE" = "true" ]; then
+              echo "::error::gitleaks znalazl sekrety (tryb enforce) — job failuje. Szczegoly w logu wyzej (wartosci zredagowane)."
+              exit 1
+            fi
+            echo "::warning::gitleaks znalazl sekrety (tryb report-only) — job NIE failuje. Przejrzyj log, usun/zrotuj sekret albo allowlistuj false-positive w .gitleaks.toml, potem wlacz enforce: true."
+          else
+            echo "::error::gitleaks zakonczyl sie bledem wykonania (exit $rc)"
+            exit "$rc"
+          fi
