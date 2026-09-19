@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "omnithings-web",
+  "compatibility_date": "2026-09-19",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./site",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    {
+      "pattern": "omnithings.ai",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.omnithings.ai",
+      "custom_domain": true
+    }
+  ]
+}

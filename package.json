@@ -1,0 +1,13 @@
+{
+  "name": "omnithings-web",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy:preview": "wrangler deploy --config wrangler.preview.jsonc",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.135.0"
+  }
+}
