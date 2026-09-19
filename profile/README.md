@@ -1,39 +1,34 @@
 <div align="center">
 
-<img src="./assets/omnithings-hero.webp" alt="OmniThings — Local-first AI, reborn." width="100%" />
+<img src="https://github.com/OmniThings.png" alt="OmniThings" width="112" height="112" />
 
 # A quiet system is waking up.
 
 **Local-first AI, reborn.**
 
+**omnithings.ai** · website coming soon
+
 </div>
 
 ---
 
-OmniThings is a local-first AI ecosystem.
-Your intelligence. Your hardware. Your rules.
+OmniThings is a local-first AI ecosystem built around your hardware, your work, and your choices.
 
-No clouds you don't own. No data leaving your walls.
-Just your machine — awake.
+We bring tools, knowledge, and AI assistance into a connected workspace. Local services form the foundation; you choose the integrations and where your data goes.
 
-We're assembling it in private.
-When the pieces lock into place, the doors open.
-
----
+Development is currently private. This profile will link to public projects and releases as they become available.
 
 ```text
 OmniThings POST ........................ booting
-  core ................................. [ READY  ]
-  module 01 ............................ [ LOCKED ]
-  module 02 ............................ [ LOCKED ]
-  module 03 ............................ [ LOCKED ]
-  module ?? ............................ [ LOCKED ]
+  local-first ......................... [ READY ]
+  workspace ........................... [ BUILD ]
+  public releases ..................... [ NEXT  ]
 
 > the idea is compiling...
 ```
 
-<div align="center">
+---
 
-**[omnithings.ai](https://omnithings.ai)** · coming soon · repos: private (for now)
+An initiative by **2K-AI** · 2k-ai.com.
 
-</div>
+Follow [OmniThings](https://github.com/OmniThings) for public project updates.
