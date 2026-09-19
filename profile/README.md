@@ -6,7 +6,7 @@
 
 **Local-first AI, reborn.**
 
-**omnithings.ai** · website coming soon
+[**omnithings.ai**](https://omnithings.ai)
 
 </div>
 
@@ -29,6 +29,6 @@ OmniThings POST ........................ booting
 
 ---
 
-An initiative by **2K-AI** · 2k-ai.com.
+An initiative by **2K-AI** · [2k-ai.com](https://2k-ai.com).
 
 Follow [OmniThings](https://github.com/OmniThings) for public project updates.
